@@ -1,0 +1,22 @@
+---
+- name: RabbitMQ repository
+  apt_repository:
+    repo: deb https://dl.bintray.com/rabbitmq/debian {{ansible_distribution_release}} main
+    state: present
+- name: RabbitMQ repository key
+  apt_key:
+    url: https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
+    state: present
+- name: import repository key
+  apt_key:
+    url: http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+    state: present
+- name: add apt repository
+  apt_repository:
+    repo: deb http://www.rabbitmq.com/debian/ testing main
+    update_cache: yes
+    state: present
+- name: Install rabbitmq-server
+  apt:
+    name: rabbitmq-server
+    update_cache: yes

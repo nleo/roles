@@ -1,0 +1,6 @@
+---
+- name: Logrotate conf
+  template:
+    src: "{{role_path}}/templates/logrotate.conf.j2"
+    dest: /etc/logrotate.d/{{app_name}}
+    mode: 0644

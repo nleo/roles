@@ -1,0 +1,13 @@
+---
+- name: repository
+  apt_repository:
+    repo: deb https://dl.yarnpkg.com/debian/ stable main
+    state: present
+- name: repository key
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+- name: install
+  apt:
+    name: yarn
+    update_cache: yes

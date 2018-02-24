@@ -1,0 +1,10 @@
+{{app_log_path}}/*.log {
+  daily
+  copytruncate
+  missingok
+  rotate 7
+  compress
+  delaycompress
+  notifempty
+  su {{deploy_user}} {{deploy_user}}
+}

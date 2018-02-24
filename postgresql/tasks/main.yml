@@ -1,0 +1,29 @@
+---
+- name: Add PostgreSQL repository
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main
+    state: present
+- name: Add PostgreSQL repository key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+- name: Install PostgreSQL server
+  apt:
+    name: postgresql-{{postgresql_version}}
+    update_cache: yes
+- name: Install python3-psycopg2 for ansible
+  apt:
+    name: python3-psycopg2
+    update_cache: yes
+- name: create db
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{database}}"
+- name: add user
+  become: true
+  become_user: postgres
+  postgresql_user:
+    db: "{{database}}"
+    name: "{{deploy_user}}"
+    password: "{{dbpass}}"

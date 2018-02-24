@@ -1,0 +1,29 @@
+---
+- name: Update and upgrade apt packages
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+  tags: ['upgrade']
+- name: Set hostname
+  hostname:
+    name: "{{ hostname }}"
+- name: Disallow password authentication
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^PasswordAuthentication"
+              line="PasswordAuthentication no"
+              state=present
+  notify: Restart ssh
+- name: install packages
+  apt:
+    name: "{{item}}"
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - aptitude
+    - htop
+    - screen
+    - mc
+    - ufw
+  tags:
+    - packages

@@ -1,0 +1,17 @@
+---
+- name: Add Brightbox ppa
+  apt_repository:
+    repo: 'ppa:brightbox/ruby-ng'
+- name: Install ruby
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - ruby{{ruby_version}}
+    - ruby{{ruby_version}}-dev
+- name: Install bundler
+  gem:
+    name: bundler
+    state: latest
+    user_install: no
+

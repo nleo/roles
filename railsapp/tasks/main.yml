@@ -1,0 +1,31 @@
+---
+- name: Create deploy user
+  user:
+    name: "{{deploy_user}}"
+    shell: /bin/bash
+
+- name: install packages
+  apt:
+    name: "{{item}}"
+  with_items:
+    - libpq-dev
+    - git
+    - build-essential
+    - patch
+    - zlib1g-dev
+    - liblzma-dev
+    - nodejs
+  tags:
+    - packages
+
+- name: .bashrc_custom
+  lineinfile:
+    create: true
+    owner: "{{deploy_user}}"
+    group: "{{deploy_user}}"
+    path: /home/{{deploy_user}}/.bashrc_custom
+    line: "{{ item }}"
+  with_items:
+    - export RAILS_ENV=production
+    - alias r=rails
+    - PATH=$PATH:/home/{{deploy_user}}/.gem/ruby/{{ruby_version}}.0/bin/

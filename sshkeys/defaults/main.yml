@@ -1,0 +1,1 @@
+ssh_users: [root, "{{deploy_user}}"]

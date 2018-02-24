@@ -1,0 +1,21 @@
+---
+- name: /etc/nginx/ssl directory
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: 0755
+- name: nginx.key
+  copy:
+    src: "{{nginx_ssl_key}}"
+    dest: /etc/nginx/ssl/nginx.key
+    mode: 0600
+- name: csr.pem
+  copy:
+    src: "{{nginx_ssl_csr_pem}}"
+    dest: /etc/nginx/ssl/csr.pem
+    mode: 0600
+- name: nginx.pem
+  copy:
+    src: "{{nginx_ssl_nginx_pem}}"
+    dest: /etc/nginx/ssl/nginx.pem
+    mode: 0600

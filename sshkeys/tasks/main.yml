@@ -1,0 +1,8 @@
+- name: copy ssh keys
+  authorized_key:
+    user: "{{ item[0] }}"
+    state: present
+    key: "{{ item[1] }}"
+  with_nested:
+    - "{{ ssh_users }}"
+    - "{{ ssh_keys }}"
