@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+APP_NAME={{app_name}}
+BACKUP_USER={{backup_user}}
+AES_PASSWORD={{remote_backup_aes_password}}
+BACKUP_SERVER={{backup_server}}
+
+now=`date "+%Y-%m-%d_%H%M"`
+pg_dump -Fc {{database}} > "/var/backup/{{database}}_$now.dump"
+openssl aes-256-cbc -pass pass:$AES_PASSWORD -in "/var/backup/{{database}}_$now.dump" -out "/var/backup/enc/{{database}}_$now.dump.enc"
+find /var/backup/ -type f -mtime +3 -exec rm {} \;
+find /var/backup/enc/ -type f -mtime +3 -exec rm {} \;
+rsync -a --del -e "ssh -i /var/local/remotebk.key" /var/backup/enc/ $BACKUP_USER@$BACKUP_SERVER:/home/$BACKUP_USER/$APP_NAME/db/

@@ -15,6 +15,8 @@
         database: "{{app_name}}"
         dbuser: "{{app_name}}"
         dbpass: password
+        backup_user: backup_user
+        backup_server: 1.1.1.1
         repo_url: git@bitbucket.org:some/app.git
         railsapp_webpack: on
         ssl: off
@@ -29,3 +31,4 @@
         - { role: logrotate, tags: [ 'logrotate' ] }
         - { role: ufw, tags: [ 'ufw' ] }
         - { role: bash, tags: [ 'bash' ] }
+        - { role: remote-postgres-backup, tags: [ 'remote-postgres-backup' ] }

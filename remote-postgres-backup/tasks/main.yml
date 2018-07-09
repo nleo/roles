@@ -1,0 +1,31 @@
+---
+- name: Copy backup script
+  template:
+    src: "{{role_path}}/files/remote_postgres_backup.j2"
+    dest: /bin/remote_postgres_backup
+    owner: root
+    group: root
+    mode: 0755
+- name: Copy remotebk.key
+  copy:
+    src: "~/remotebk.key"
+    dest: /var/local/remotebk.key
+    owner: postgres
+    group: postgres
+    mode: 0400
+- name: Folders for backup files
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: 0700
+  with_items:
+    - /var/backup
+    - /var/backup/enc
+- name: Backup every hour
+  cron:
+    name: remote_postgres_backup
+    minute: 15
+    job: remote_postgres_backup
+    user: postgres
