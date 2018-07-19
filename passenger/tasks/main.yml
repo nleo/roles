@@ -1,12 +1,12 @@
 ---
-- name: Add Phusion Passenger repository
-  apt_repository:
-    repo: deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ansible_distribution_release}} main
-    state: present
 - name: Add Phusion Passenger repository key
   apt_key:
     keyserver: hkp://keyserver.ubuntu.com:80
     id: 561F9B9CAC40B2F7
+- name: Add Phusion Passenger repository
+  apt_repository:
+    repo: deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ansible_distribution_release}} main
+    state: present
 - name: Install Phusion Passenger
   apt:
     name: "{{item}}"
