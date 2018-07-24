@@ -25,5 +25,6 @@
     - screen
     - mc
     - ufw
+    - vim
   tags:
     - packages

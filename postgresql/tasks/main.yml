@@ -25,5 +25,5 @@
   become_user: postgres
   postgresql_user:
     db: "{{database}}"
-    name: "{{deploy_user}}"
+    name: "{{dbuser}}"
     password: "{{dbpass}}"
