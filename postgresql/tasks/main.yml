@@ -27,3 +27,13 @@
     db: "{{database}}"
     name: "{{dbuser}}"
     password: "{{dbpass}}"
+
+- name: add extentions
+  become: true
+  become_user: postgres
+  postgresql_ext:
+    name: "{{item}}"
+    db: "{{database}}"
+  with_items: "{{ postgresql_extentions }}"
+  when: postgresql_extentions is defined
+  tags: postgresql_extentions
