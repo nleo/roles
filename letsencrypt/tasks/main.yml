@@ -1,0 +1,10 @@
+---
+- name: install certbot
+  apt:
+    name: "{{item}}"
+  with_items:
+    - certbot
+    - python3-certbot-nginx
+  tags:
+    - packages
+

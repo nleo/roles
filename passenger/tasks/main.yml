@@ -14,20 +14,32 @@
   with_items:
     - nginx-extras
     - passenger
-- name: Enable Phusion Passenger
-  lineinfile:
-    path: /etc/nginx/nginx.conf
-    regexp: 'passenger\.conf'
-    line: 'include /etc/nginx/passenger.conf;'
+# - name: Enable Phusion Passenger
+#   lineinfile:
+#     path: /etc/nginx/nginx.conf
+#     regexp: 'passenger\.conf'
+#     line: 'include /etc/nginx/passenger.conf;'
+
 - name: env PATH in nginx.conf for nodejs
   lineinfile:
     path: /etc/nginx/nginx.conf
     line: 'env PATH;'
     state: present
     insertbefore: '^user'
+
 - name: Site config
   template:
     src: "{{role_path}}/templates/site.conf.j2"
     dest: /etc/nginx/sites-enabled/{{app_name}}
     mode: 0600
   notify: restart nginx
+
+- name: passenger.conf
+  template:
+    src: "{{role_path}}/templates/passenger.conf.j2"
+    dest: /etc/nginx/conf.d/mod-http-passenger.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+  tags: passengerconf
