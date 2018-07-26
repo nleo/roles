@@ -20,8 +20,15 @@
         repo_url: git@bitbucket.org:some/app.git
         railsapp_webpack: on
         ssl: off
+        postgresql_extentions:
+          - pg_trgm
+          - fuzzystrmatch
+        passenger_max_pool_size: 3
+        passenger_max_requests: 1000
       roles:
         - { role: common, tags: [ 'common' ] }
+        - { role: bash, tags: [ 'bash' ] }
+        - { role: motd, tags: [ 'motd' ] }
         - { role: nodejs, tags: [ 'nodejs' ] }
         - { role: railsapp, tags: [ 'railsapp' ] }
         - { role: sshkeys, tags: [ 'sshkeys' ] }
@@ -30,5 +37,7 @@
         - { role: passenger, tags: [ 'passenger' ] }
         - { role: logrotate, tags: [ 'logrotate' ] }
         - { role: ufw, tags: [ 'ufw' ] }
-        - { role: bash, tags: [ 'bash' ] }
+        - { role: yarn, tags: [ 'yarn' ] }
         - { role: remote-postgres-backup, tags: [ 'remote-postgres-backup' ] }
+        # - { role: letsencrypt, tags: [ 'letsencrypt' ] } in progress
+        - { role: redis-server, tags: [ 'redis-server' ] }
