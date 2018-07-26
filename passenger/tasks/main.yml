@@ -12,13 +12,7 @@
     name: "{{item}}"
     update_cache: yes
   with_items:
-    - nginx-extras
-    - passenger
-# - name: Enable Phusion Passenger
-#   lineinfile:
-#     path: /etc/nginx/nginx.conf
-#     regexp: 'passenger\.conf'
-#     line: 'include /etc/nginx/passenger.conf;'
+    - libnginx-mod-http-passenger
 
 - name: env PATH in nginx.conf for nodejs
   lineinfile:

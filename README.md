@@ -1,3 +1,15 @@
+# Ansible roles for Rails production deployment
+
+Tested on Ubuntu 18.04
+
+    # hosts
+    [sampleapp]
+    2.2.2.2
+    [all:vars]
+    ansible_ssh_user=root
+    ansible_python_interpreter=/usr/bin/python3
+
+    # site.yml
     ---
     - hosts: sampleapp
       vars_files:
