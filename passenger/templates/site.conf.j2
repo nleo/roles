@@ -28,6 +28,8 @@ server {
   {% endif %}
 }
 
+{% if ssl %}
+## Redirect to https
 server {
   if ($host = {{domain}}) {
       return 301 https://$host$request_uri;
@@ -35,3 +37,4 @@ server {
   listen 80 ;
   server_name {{domain}};
 }
+{% endif %}
