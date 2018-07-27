@@ -1,0 +1,36 @@
+- name: install rssh
+  apt:
+    name: "{{item}}"
+  with_items:
+    - rssh
+  tags:
+    - packages
+
+- name: user external_backup
+  user:
+    name: external_backup
+    shell: /usr/bin/rssh
+
+- name: ssh key
+  authorized_key:
+    user: external_backup
+    state: present
+    key: "{{ remote_backup_pub_key }}"
+
+- name: allow rsync and scp
+  lineinfile:
+    dest: /etc/rssh.conf
+    line: "{{ item }}"
+    state: present
+  with_items:
+    - allowrsync
+    - allowscp
+
+- name: backup folders
+  file:
+    path: "{{item}}"
+    owner: external_backup
+    group: external_backup
+    mode: 0700
+    state: directory
+  with_items: "{{ folders }}"
