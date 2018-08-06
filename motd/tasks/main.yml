@@ -16,3 +16,4 @@
     - /etc/update-motd.d/50-motd-news
     - /etc/update-motd.d/80-esm
     - /etc/update-motd.d/80-livepatch
+    - /etc/motd

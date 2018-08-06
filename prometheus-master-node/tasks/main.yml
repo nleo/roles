@@ -1,0 +1,24 @@
+- name: install packages
+  apt:
+    name: "{{item}}"
+  with_items:
+    - prometheus
+    - nginx
+    - python3-passlib
+  tags:
+    - packages
+
+- htpasswd:
+    path: /etc/nginx/conf.d/htpasswd
+    name: "{{prometheus_master_node.basic_auth_user}}"
+    password: "{{prometheus_master_node.basic_auth_password}}"
+    owner: root
+    group: www-data
+    mode: 0640
+
+- name: Site config
+  template:
+    src: "{{role_path}}/templates/prometheus-nginx-proxy.conf"
+    dest: /etc/nginx/sites-enabled/prometheus-nginx-proxy.conf
+    mode: 0600
+  notify: restart nginx
