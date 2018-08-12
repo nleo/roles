@@ -9,8 +9,8 @@ WorkingDirectory={{app_path}}/current
 ExecStart=/usr/local/bin/bundler exec sidekiq -e production
 ExecReload=/bin/kill -TSTP $MAINPID
 ExecStop=/bin/kill -TERM $MAINPID
-User=rails
-Group=rails
+User={{deploy_user}}
+Group={{deploy_user}}
 
 RestartSec=1
 Restart=on-failure
