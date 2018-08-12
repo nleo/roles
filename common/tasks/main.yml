@@ -28,3 +28,11 @@
     - vim
   tags:
     - packages
+
+- name: install additional packages
+  apt:
+    name: "{{item}}"
+  with_items: "{{additional_packages}}"
+  when: additional_packages is defined
+  tags:
+    - packages

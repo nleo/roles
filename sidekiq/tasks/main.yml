@@ -1,0 +1,11 @@
+- name: install systemd unit
+  template:
+    src: "{{role_path}}/templates/sidekiq-production.service"
+    dest: "/etc/systemd/system/sidekiq-{{app_name}}.service"
+
+- name: test
+  systemd:
+    name: "sidekiq-{{app_name}}"
+    daemon_reload: true
+    enabled: true
+    state: started

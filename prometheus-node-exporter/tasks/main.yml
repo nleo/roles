@@ -1,0 +1,8 @@
+# prometheus-node-exporter
+- name: install packages
+  apt:
+    name: "{{item}}"
+  with_items:
+    - prometheus-node-exporter
+  tags:
+    - packages

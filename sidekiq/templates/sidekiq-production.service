@@ -1,0 +1,21 @@
+[Unit]
+Description=sidekiq for {{app_name}} (production)
+After=syslog.target network.target
+
+[Service]
+Type=simple
+Environment=RAILS_ENV=production
+WorkingDirectory={{app_path}}/current
+ExecStart=/usr/local/bin/bundler exec sidekiq -e production
+ExecReload=/bin/kill -TSTP $MAINPID
+ExecStop=/bin/kill -TERM $MAINPID
+User=rails
+Group=rails
+
+RestartSec=1
+Restart=on-failure
+
+SyslogIdentifier=sidekiq
+
+[Install]
+WantedBy=default.target
