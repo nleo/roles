@@ -7,12 +7,24 @@
   apt_repository:
     repo: deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ansible_distribution_release}} main
     state: present
+
 - name: Install Phusion Passenger
   apt:
     name: "{{item}}"
     update_cache: yes
   with_items:
+    - nginx-extras
     - libnginx-mod-http-passenger
+  when: ansible_distribution_version == '18.04'
+
+- name: Install Phusion Passenger
+  apt:
+    name: "{{item}}"
+    update_cache: yes
+  with_items:
+    - nginx-extras
+    - passenger
+  when: ansible_distribution_version == '16.04'
 
 - name: env PATH in nginx.conf for nodejs
   lineinfile:
@@ -37,3 +49,11 @@
     mode: 0644
   notify: restart nginx
   tags: passengerconf
+  when: ansible_distribution_version == '18.04'
+
+- name: Enable Phusion Passenger
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: 'passenger\.conf'
+    line: 'include /etc/nginx/passenger.conf;'
+  when: ansible_distribution_version == '16.04'
