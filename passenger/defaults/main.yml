@@ -1,0 +1,3 @@
+passenger_max_pool_size: 3
+passenger_max_requests: 1000
+ssl: off
