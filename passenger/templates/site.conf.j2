@@ -20,8 +20,8 @@ server {
   passenger_nodejs /usr/bin/nodejs;
   passenger_sticky_sessions on;
 
-  ## ENV ##
   {% if app_env is defined %}
+  ## ENV ##
     {% for item in app_env %}
       passenger_env_var {{ item }} {{ app_env[item] }};
     {% endfor %}

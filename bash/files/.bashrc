@@ -77,3 +77,7 @@ alias l='ls -CF'
 if [ -f ~/.bashrc_custom ]; then
   . ~/.bashrc_custom
 fi
+
+if [ -f ~/.bashrc_deploy_user ]; then
+  . ~/.bashrc_deploy_user
+fi

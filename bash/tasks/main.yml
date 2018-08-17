@@ -32,3 +32,12 @@
       "\e[A":history-search-backward
       "\e[B":history-search-forward
       set show-all-if-ambiguous on
+
+- name: .bashrc_deploy_user
+  template:
+    src: "{{role_path}}/templates/.bashrc_deploy_user"
+    dest: /home/{{deploy_user}}/.bashrc_deploy_user
+    owner: "{{deploy_user}}"
+    group: "{{deploy_user}}"
+    mode: 0600
+  when: deploy_user is defined

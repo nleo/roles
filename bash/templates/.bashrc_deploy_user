@@ -1,0 +1,4 @@
+alias c="bundle exec rails c"
+
+cd {{app_path}}/current
+
