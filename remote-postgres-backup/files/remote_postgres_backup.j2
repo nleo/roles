@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 APP_NAME={{app_name}}
-BACKUP_USER={{backup_user}}
-AES_PASSWORD={{remote_backup_aes_password}}
-BACKUP_SERVER={{backup_server}}
+BACKUP_USER={{remote_postgres_backup.user}}
+AES_PASSWORD={{remote_postgres_backup.password}}
+BACKUP_SERVER={{remote_postgres_backup.server}}
 
 now=`date "+%Y-%m-%d_%H%M"`
 pg_dump -Fc {{database}} > "/var/backup/{{database}}_$now.dump"

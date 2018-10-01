@@ -7,7 +7,7 @@
 - name: install packages
   apt:
     name: "{{item}}"
-  with_items:
+  loop:
     - libpq-dev
     - git
     - build-essential
@@ -24,7 +24,7 @@
     group: "{{deploy_user}}"
     path: /home/{{deploy_user}}/.bashrc_custom
     line: "{{ item }}"
-  with_items:
+  loop:
     - export RAILS_ENV=production
     - alias r=rails
     - PATH=$PATH:/home/{{deploy_user}}/.gem/ruby/{{ruby_version}}.0/bin/

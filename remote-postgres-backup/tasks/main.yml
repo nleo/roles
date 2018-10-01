@@ -26,6 +26,6 @@
 - name: Backup every hour
   cron:
     name: remote_postgres_backup
-    minute: 15
+    minute: "{{remote_postgres_backup.minute}}"
     job: remote_postgres_backup
     user: postgres

@@ -8,14 +8,14 @@
 
 - name: user external_backup
   user:
-    name: external_backup
+    name: "{{backup_server.user}}"
     shell: /usr/bin/rssh
 
 - name: ssh key
   authorized_key:
-    user: external_backup
+    user: "{{backup_server.user}}"
     state: present
-    key: "{{ remote_backup_pub_key }}"
+    key: "{{ backup_server.remote_backup_pub_key }}"
 
 - name: allow rsync and scp
   lineinfile:
@@ -29,8 +29,8 @@
 - name: backup folders
   file:
     path: "{{item}}"
-    owner: external_backup
-    group: external_backup
+    owner: "{{backup_server.user}}"
+    group: "{{backup_server.user}}"
     mode: 0700
     state: directory
-  with_items: "{{ folders }}"
+  with_items: "{{ backup_server.folders }}"
