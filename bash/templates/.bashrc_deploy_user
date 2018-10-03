@@ -1,4 +1,13 @@
+alias r=rails
 alias c="bundle exec rails c"
+
+{% if staging is defined %}
+export RAILS_ENV=staging
+{% else %}
+export RAILS_ENV=production
+{% endif %}
+
+PATH=$PATH:/home/{{deploy_user}}/.gem/ruby/{{ruby_version}}.0/bin/
 
 if [ -f {{app_path}}/current ]; then
   cd {{app_path}}/current

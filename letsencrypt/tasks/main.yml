@@ -8,3 +8,4 @@
   tags:
     - packages
 
+# certbot --noninteractive -m mail@intelaxy.ru --agree-tos --nginx certonly -d api.inventoryapp.info

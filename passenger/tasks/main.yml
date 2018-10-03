@@ -33,6 +33,13 @@
     state: present
     insertbefore: '^user'
 
+- name: set server_names_hash_bucket_size = 64
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: 'server_names_hash_bucket_size 64;'
+    state: present
+    insertafter: '^http'
+
 - name: Site config
   template:
     src: "{{role_path}}/templates/site.conf.j2"

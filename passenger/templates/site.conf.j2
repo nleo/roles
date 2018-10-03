@@ -20,6 +20,10 @@ server {
   passenger_nodejs /usr/bin/nodejs;
   passenger_sticky_sessions on;
 
+  {% if staging is defined %}
+    passenger_app_env staging;
+  {% endif %}
+
   {% if app_env is defined %}
   ## ENV ##
     {% for item in app_env %}
