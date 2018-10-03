@@ -1,4 +1,5 @@
 alias c="bundle exec rails c"
 
-cd {{app_path}}/current
-
+if [ -f {{app_path}}/current ]; then
+  cd {{app_path}}/current
+fi

@@ -36,16 +36,32 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+if hostname -f | grep -q 'staging'; then
+  _ROOT_COLOR=33  # yellow
+  _USER_COLOR=34  # green
+else
+  _ROOT_COLOR=31  # red
+  _USER_COLOR=36  # cyan
+  # 34 - blue 32 - green
+fi
+
 if [ "$color_prompt" = yes ]; then
   if [ $(id -u) -eq 0 ];
   then # you are root, make the prompt red
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;${_ROOT_COLOR}m\]\H\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
   else
-    PS1="[\e[01;34m\u @ \h\e[00m]----[\e[01;34m$(pwd)\e[00m]\n$ "
+    PS1="[\e[01;${_USER_COLOR}m\u @ \H\e[00m]----[\e[01;${_USER_COLOR}m$(pwd)\e[00m]\n$ "
   fi
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
+
+# if [ "`id -u`" -eq 0 ]; then
+#   PS1="\[\033[01;${_ROOT_COLOR}m\]$(hostname -f|sed -E 's/api\.(staging\.)?//')\[\033[01;34m\] \w #\[\033[00m\] "
+# else
+#   PS1="\[\033[01;${_USER_COLOR}m\]\u@$(hostname -f|sed 's/\.example\.com//')\[\033[01;34m\] \w $\[\033[00m\] "
+# fi
+
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
