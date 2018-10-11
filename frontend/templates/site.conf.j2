@@ -1,0 +1,27 @@
+server {
+  {% if ssl %}
+  ## SSL ##
+  listen 443;
+  ssl on;
+  ssl_certificate /etc/letsencrypt/live/{{frontend.domain}}/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/{{frontend.domain}}/privkey.pem;
+  ssl_session_timeout 5m;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers HIGH+kEECDH+AESGCM:HIGH+kEECDH:HIGH+kEDH:HIGH:!aNULL;
+  ssl_prefer_server_ciphers on;
+  {% endif %}
+
+  server_name {{frontend.domain}};
+  root {{frontend.app_path}};
+}
+
+{% if ssl %}
+## Redirect to https
+server {
+  if ($host = {{frontend.domain}}) {
+    return 301 https://$host$request_uri;
+  }
+  listen 80 ;
+  server_name {{frontend.domain}};
+}
+{% endif %}

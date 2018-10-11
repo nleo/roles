@@ -1,0 +1,27 @@
+---
+- name: Create deploy user
+  user:
+    name: "{{frontend.user}}"
+    shell: /bin/bash
+
+- name: directory
+  file:
+    path: "{{frontend.app_path}}"
+    state: directory
+    owner: "{{frontend.user}}"
+    group: "{{frontend.user}}"
+    mode: 0777
+
+- name: Site config
+  template:
+    src: "{{role_path}}/templates/site.conf.j2"
+    dest: /etc/nginx/sites-enabled/{{app_name}}_frontend
+    mode: 0600
+  notify: restart nginx
+
+- name: copy ssh keys
+  authorized_key:
+    user: "{{ frontend.user }}"
+    state: present
+    key: "{{ item }}"
+  loop: "{{ ssh_keys }}"
