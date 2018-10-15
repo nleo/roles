@@ -2,15 +2,31 @@
 - name: Add Brightbox ppa
   apt_repository:
     repo: 'ppa:brightbox/ruby-ng'
+    codename: bionic
+
 - name: Install ruby
   apt:
-    name: "{{ item }}"
+    name:
+      - "ruby{{ruby_version}}"
+      - "ruby{{ruby_version}}-dev"
     update_cache: yes
-  with_items:
-    - ruby{{ruby_version}}
-    - ruby{{ruby_version}}-dev
+
 - name: Install bundler
   gem:
     name: bundler
     state: latest
     user_install: no
+
+- name: disable ri rdoc
+  lineinfile:
+    path: /etc/gemrc
+    line: 'gem: --no-rdoc --no-ri'
+    create: yes
+
+- name: install additional gems
+  gem:
+    name: "{{item}}"
+    state: latest
+    user_install: no
+  loop: "{{additional_gems}}"
+  when: additional_gems is defined
