@@ -8,4 +8,10 @@
   tags:
     - packages
 
-# certbot --noninteractive -m mail@intelaxy.ru --agree-tos --nginx certonly -d api.inventoryapp.info
+- stat:
+    path: /etc/letsencrypt/live/{{domain}}/fullchain.pem
+  register: letsencrypt_fullchain
+
+- name: generate cert for domain
+  command: certbot --noninteractive -m {{letsencrypt_email}} --agree-tos --standalone --preferred-challenges http certonly -d {{domain}}
+  when: not letsencrypt_fullchain.stat.exists
