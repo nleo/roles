@@ -25,3 +25,11 @@
     state: present
     key: "{{ item }}"
   loop: "{{ ssh_keys }}"
+
+- name: copy frontenders ssh keys
+  authorized_key:
+    user: "{{ frontend.user }}"
+    state: present
+    key: "{{ item }}"
+  loop: "{{ frontend.frontenders }}"
+  when: frontend.frontenders is defined
