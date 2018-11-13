@@ -1,10 +1,7 @@
 ---
 - name: install certbot
   apt:
-    name: "{{item}}"
-  with_items:
-    - certbot
-    - python3-certbot-nginx
+    name: [certbot, python3-certbot-nginx]
   tags:
     - packages
 
@@ -12,6 +9,31 @@
     path: /etc/letsencrypt/live/{{domain}}/fullchain.pem
   register: letsencrypt_fullchain
 
+- stat:
+    path: /etc/letsencrypt/live/{{frontend_domain}}/fullchain.pem
+  register: letsencrypt_fullchain_frontend_domain
+  when: frontend_domain is defined
+
+- name: stop nginx
+  systemd:
+    state: stopped
+    name: nginx
+
+- debug:
+    msg: certbot --noninteractive -m {{letsencrypt_email}} --agree-tos --standalone --preferred-challenges http certonly -d {{domain}}
+    verbosity: 1
+
 - name: generate cert for domain
   command: certbot --noninteractive -m {{letsencrypt_email}} --agree-tos --standalone --preferred-challenges http certonly -d {{domain}}
   when: not letsencrypt_fullchain.stat.exists
+
+
+- name: generate cert for frontend_domain
+  command: certbot --noninteractive -m {{letsencrypt_email}} --agree-tos --standalone --preferred-challenges http certonly -d {{frontend_domain}}
+  when: frontend_domain is defined and not letsencrypt_fullchain_frontend_domain.stat.exists
+
+
+- name: start nginx
+  systemd:
+    state: started
+    name: nginx
