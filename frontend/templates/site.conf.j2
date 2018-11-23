@@ -14,6 +14,19 @@ server {
   server_name {{frontend_domain}};
   root {{frontend.app_path}};
 
+  {% if api_proxy_pass %}
+
+    location /graphql {
+      proxy_pass https://{{domain}}/graphql;
+    }
+
+    location /alerts {
+      proxy_pass https://{{domain}}/alerts;
+    }
+
+  {% endif %}
+
+
   location ~* \.(?:manifest|appcache|html?|xml|json)$ {
     expires -1;
     # access_log logs/static.log; # I don't usually include a static log
