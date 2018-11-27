@@ -11,3 +11,5 @@ openssl aes-256-cbc -pass pass:$AES_PASSWORD -in "/var/backup/{{database}}_$now.
 find /var/backup/ -type f -mtime +3 -exec rm {} \;
 find /var/backup/enc/ -type f -mtime +3 -exec rm {} \;
 rsync -a --del -e "ssh -i /var/local/remotebk.key" /var/backup/enc/ $BACKUP_USER@$BACKUP_SERVER:/home/$BACKUP_USER/$APP_NAME/db/
+
+rm "/var/backup/{{database}}_$now.dump"
