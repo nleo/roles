@@ -6,3 +6,8 @@
   apt:
     name: redis-server
     update_cache: yes
+- name: Make sure a service is running
+  systemd:
+    name: redis-server
+    state: started
+    enabled: yes
