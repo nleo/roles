@@ -4,10 +4,12 @@
     upgrade: yes
     update_cache: yes
     cache_valid_time: 86400 #One day
+    autoremove: yes
   tags: ['upgrade']
 - name: Set hostname
   hostname:
     name: "{{ hostname }}"
+  tags: hostname
 - name: Disallow password authentication
   lineinfile: dest=/etc/ssh/sshd_config
               regexp="^PasswordAuthentication"
@@ -16,23 +18,21 @@
   notify: Restart ssh
 - name: install packages
   apt:
-    name: "{{item}}"
-  with_items:
-    - apt-transport-https
-    - ca-certificates
-    - aptitude
-    - htop
-    - screen
-    - mc
-    - ufw
-    - vim
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - aptitude
+      - htop
+      - screen
+      - mc
+      - ufw
+      - vim
   tags:
     - packages
 
 - name: install additional packages
   apt:
-    name: "{{item}}"
-  with_items: "{{additional_packages}}"
+    name: "{{additional_packages}}"
   when: additional_packages is defined
   tags:
     - packages

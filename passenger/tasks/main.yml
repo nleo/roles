@@ -10,20 +10,14 @@
 
 - name: Install Phusion Passenger
   apt:
-    name: "{{item}}"
+    pkg: [nginx-extras, libnginx-mod-http-passenger]
     update_cache: yes
-  with_items:
-    - nginx-extras
-    - libnginx-mod-http-passenger
   when: ansible_distribution_version == '18.04'
 
 - name: Install Phusion Passenger
   apt:
-    name: "{{item}}"
+    pkg: [nginx-extras, passenger]
     update_cache: yes
-  with_items:
-    - nginx-extras
-    - passenger
   when: ansible_distribution_version == '16.04'
 
 - name: env PATH in nginx.conf for nodejs

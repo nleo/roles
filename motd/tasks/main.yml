@@ -1,11 +1,8 @@
 ---
 - name: install landscape-common
   apt:
-    name: "{{item}}"
-  with_items:
-    - landscape-common
-  tags:
-    - packages
+    name: landscape-common
+  tags: packages
 
 - name: remove ads
   file:
