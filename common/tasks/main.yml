@@ -27,6 +27,7 @@
       - mc
       - ufw
       - vim
+      - gnupg2
   tags:
     - packages
 

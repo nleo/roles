@@ -14,7 +14,8 @@
 - name: Install bundler
   gem:
     name: bundler
-    state: latest
+    version: 1.17
+    #state: latest
     user_install: no
 
 - name: disable ri rdoc
