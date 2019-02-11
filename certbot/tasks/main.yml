@@ -1,4 +1,7 @@
 ---
+- apt_repository:
+    repo: ppa:certbot/certbot
+
 - name: install certbot
   apt:
     name: [certbot, python3-certbot-nginx]
@@ -37,3 +40,31 @@
   systemd:
     state: started
     name: nginx
+
+- name: list of the .conf files in /etc/letsencrypt/renewal
+  raw: find /etc/letsencrypt/renewal -type f -name "*.conf"
+  register: certs_configs
+
+- name: set certbot authenticator
+  loop: "{{certs_configs.stdout_lines}}"
+  lineinfile:
+    dest: "{{item}}"
+    state: present
+    regexp: '^authenticator = '
+    line: authenticator = nginx
+
+- name: remove hooks
+  loop: "{{certs_configs.stdout_lines}}"
+  lineinfile:
+    dest: "{{item}}"
+    state: absent
+    regexp: '_hook = '
+
+- name: set certbot post hook
+  loop: "{{certs_configs.stdout_lines}}"
+  lineinfile:
+    dest: "{{item}}"
+    state: present
+    regexp: '^post_hook = '
+    insertafter: '[renewalparams]'
+    line: post_hook = service nginx reload
