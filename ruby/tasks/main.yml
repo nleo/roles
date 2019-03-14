@@ -31,3 +31,7 @@
     user_install: no
   loop: "{{additional_gems}}"
   when: additional_gems is defined
+
+- name: update RubyGems
+  command: gem update --system
+  tags: update-rubygems

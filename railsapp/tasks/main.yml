@@ -35,3 +35,31 @@
     name: webpack
     global: yes
   when: railsapp_webpack
+
+- name: install rpush unit
+  template:
+    src: "{{role_path}}/templates/rpush.service"
+    dest: /home/{{deploy_user}}/.config/systemd/user/rpush.service
+    owner: "{{deploy_user}}"
+    group: "{{deploy_user}}"
+    mode: 0600
+  when: rpush
+  tags: rpush
+# systemctl --user daemon-reload
+- name: enable rpush unit
+  systemd:
+    name: rpush
+    state: started
+    enabled: yes
+    scope: user
+    # daemon_reload: yes
+  become: yes
+  become_user: "{{deploy_user}}"
+  # become_method: su
+  when: rpush
+  # tags: rpush
+
+- debug:
+    var: rails_env
+    verbosity: 2
+  tags: debug

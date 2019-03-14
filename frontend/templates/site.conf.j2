@@ -29,6 +29,8 @@ server {
 
   location ~* \.(?:manifest|appcache|html?|xml|json)$ {
     expires -1;
+    # add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+    # add_header Pragma "no-cache";
     # access_log logs/static.log; # I don't usually include a static log
   }
 

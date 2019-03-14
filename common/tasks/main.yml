@@ -37,3 +37,11 @@
   when: additional_packages is defined
   tags:
     - packages
+
+- name: "Helpers: bin: drop-systemd-unit"
+  copy:
+    src: "{{role_path}}/helpers/bin/drop-systemd-unit"
+    dest: /usr/bin/drop-systemd-unit
+    owner: root
+    group: root
+    mode: 0700

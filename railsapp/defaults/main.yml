@@ -1,1 +1,4 @@
+staging: false
 railsapp_webpack: off
+rpush: off
+rails_env: "{{ 'staging' if (staging) else 'production' }}"

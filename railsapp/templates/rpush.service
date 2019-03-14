@@ -1,0 +1,26 @@
+[Unit]
+Description=rpush
+After=syslog.target network.target
+
+[Service]
+Type=forking
+; User={{deploy_user}}
+; Group={{deploy_user}}
+; UMask=0002
+PIDFile={{app_path}}/shared/tmp/pids/rpush.pid
+WorkingDirectory={{app_path}}/current
+
+ExecStart=/bin/bash -lc 'bundle exec rpush start -e {{rails_env}}'
+ExecStop=/bin/bash -lc 'bundle exec rpush stop -e {{rails_env}}'
+ExecReload=/bin/kill -s USR2 $MAINPID
+
+RestartSec=60
+Restart=on-failure
+
+StandardOutput=syslog
+StandardError=syslog
+
+SyslogIdentifier=rpush
+
+[Install]
+WantedBy=default.target
