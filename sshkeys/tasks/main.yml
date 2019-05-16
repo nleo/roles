@@ -1,4 +1,4 @@
-- name: copy ssh keys
+- name: copy default ssh keys
   authorized_key:
     user: "{{ item[0] }}"
     state: present
@@ -6,3 +6,11 @@
   with_nested:
     - "{{ ssh_users }}"
     - "{{ ssh_keys }}"
+
+- name: copy backenders ssh keys to deploy_user
+  authorized_key:
+    user: "{{ deploy_user }}"
+    state: present
+    key: "{{ item }}"
+  loop: "{{ backenders }}"
+  when: backenders is defined
