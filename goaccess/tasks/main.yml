@@ -1,0 +1,10 @@
+---
+- apt_repository:
+    repo: deb http://deb.goaccess.io/ {{ansible_distribution_release}} main
+    state: present
+- apt_key:
+    url: https://deb.goaccess.io/gnugpg.key
+    state: present
+- apt:
+    name: goaccess
+    update_cache: yes
