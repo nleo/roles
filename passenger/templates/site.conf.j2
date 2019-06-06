@@ -10,6 +10,7 @@ server {
   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
   ssl_ciphers HIGH+kEECDH+AESGCM:HIGH+kEECDH:HIGH+kEDH:HIGH:!aNULL;
   ssl_prefer_server_ciphers on;
+  ## /SSL ##
   {% endif %}
 
   server_name {{domain}};
@@ -21,16 +22,27 @@ server {
   passenger_nodejs /usr/bin/nodejs;
   passenger_sticky_sessions on;
 
+  {% if websocket is defined %}
+
+  location /{{websocket}} {
+    passenger_app_group_name {{app_name}}_websocket;
+    passenger_force_max_concurrent_requests_per_process 0;
+  }
+
+  {% endif %}
+
   {% if staging is defined %}
-    passenger_app_env staging;
+  passenger_app_env staging;
   {% endif %}
 
   {% if app_env is defined %}
   ## ENV ##
     {% for item in app_env %}
-      passenger_env_var {{ item }} {{ app_env[item] }};
+  passenger_env_var {{ item }} {{ app_env[item] }};
     {% endfor %}
+  ## /ENV ##
   {% endif %}
+  ## /PASSENGER ##
 }
 
 {% if ssl %}
