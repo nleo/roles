@@ -25,7 +25,7 @@ server {
   {% if websocket is defined %}
 
   location /{{websocket}} {
-    passenger_app_group_name {{app_name}}_websocket;
+    passenger_app_group_name {{app_name}}_action_cable;
     passenger_force_max_concurrent_requests_per_process 0;
   }
 

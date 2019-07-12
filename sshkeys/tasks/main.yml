@@ -14,3 +14,13 @@
     key: "{{ item }}"
   loop: "{{ backenders }}"
   when: backenders is defined
+
+- name: revoke ssh keys
+  authorized_key:
+    user: "{{ item[0] }}"
+    state: absent
+    key: "{{ item[1] }}"
+  with_nested:
+    - "{{ ssh_users }}"
+    - "{{ revoke_ssh_keys }}"
+  when: revoke_ssh_keys is defined
